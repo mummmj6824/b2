@@ -1000,7 +1000,7 @@ public:
 		result = Vec<CT>::Zero(this->GetSystem().NumVariables());
 		for(unsigned int ii = 0; ii < total_num_pts; ++ii)
 			result += cau_samples[ii];
-		result /= static_cast<RT>(this->CycleNumber() * this->EndgameSettings().num_sample_points);
+		result /= this->CycleNumber() * this->EndgameSettings().num_sample_points;
 
 		return SuccessCode::Success;
 
