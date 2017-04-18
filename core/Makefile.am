@@ -100,3 +100,4 @@ include test/generating/Makemodule.am
 include test/nag_algorithms/Makemodule.am
 include test/nag_datatypes/Makemodule.am
 include test/blackbox/Makemodule.am
+include test/library_compatibility/Makemodule.am
