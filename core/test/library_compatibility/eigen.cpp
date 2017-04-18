@@ -319,13 +319,13 @@ BOOST_AUTO_TEST_CASE(size_object_sensible_mat)
 	{
 		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
-		using data_type = bertini::mpfr;
+		using T = bertini::mpfr;
 		
-		Eigen::Matrix<data_type, 3, 1> v(data_type(2),data_type(4),data_type(3));
-		Eigen::Matrix<data_type, 3, 1> w(data_type(1),data_type(2),data_type(-1));
+		Eigen::Matrix<T, 3, 1> v(T(2),T(4),T(3));
+		Eigen::Matrix<T, 3, 1> w(T(1),T(2),T(-1));
 
-		data_type result = v.dot(w);
-		data_type exact(7);
+		T result = v.dot(w);
+		T exact(7);
 		
 		BOOST_CHECK_EQUAL(result, exact);
 		
@@ -336,13 +336,13 @@ BOOST_AUTO_TEST_CASE(size_object_sensible_mat)
 	{
 		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
-		using data_type = bertini::mpfr;
+		using T = bertini::mpfr;
 		
-		Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
-		A << data_type(2), data_type(1), data_type(1), data_type(2);
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
 		
 		// this breaks with boost multiprecision et_on with eigen 3.2.7.
-		Eigen::JacobiSVD<Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic>> svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
+		Eigen::JacobiSVD<Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>> svd(A, Eigen::ComputeThinU | Eigen::ComputeThinV);
 		
 		
 	}
@@ -354,14 +354,14 @@ BOOST_AUTO_TEST_CASE(size_object_sensible_mat)
 	{
 		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
-		using data_type = bertini::mpfr;
+		using T = bertini::mpfr;
 		
-		Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
-		A << data_type(2), data_type(1), data_type(1), data_type(2);
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
 		
-		data_type a(1);
+		T a(1);
 		// this breaks with boost multiprecision et_on with eigen 3.2.7.
-		Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic> B = a*A;
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> B = a*A;
 		B = A*a;
 	}
 
@@ -370,19 +370,19 @@ BOOST_AUTO_TEST_CASE(size_object_sensible_mat)
 	{
 		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
-		using data_type = bertini::mpfr;
+		using T = bertini::mpfr;
 		
-		data_type q(1);
+		T q(1);
 		int a(1);
 
 		auto b = a*q;
 
-		Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
-		A << data_type(2), data_type(1), data_type(1), data_type(2);
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
 		
 		
 
-		Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic> B = a*A;
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> B = a*A;
 		B = A*a;
 	}
 
@@ -391,19 +391,19 @@ BOOST_AUTO_TEST_CASE(size_object_sensible_mat)
 	{
 		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
-		using data_type = bertini::mpfr;
+		using T = bertini::mpfr;
 		
-		data_type q(1);
+		T q(1);
 		long a(1);
 
 		auto b = a*q;
 		
-		Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
-		A << data_type(2), data_type(1), data_type(1), data_type(2);
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
 		
 		
 
-		Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic> B = a*A;
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> B = a*A;
 		B = A*a;
 	}
 
@@ -411,19 +411,19 @@ BOOST_AUTO_TEST_CASE(size_object_sensible_mat)
 	{
 		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
-		using data_type = bertini::mpfr;
+		using T = bertini::mpfr;
 		
-		data_type q(1);
+		T q(1);
 		bertini::mpz_int a(1);
 
 		auto b = a*q;
 		
-		Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
-		A << data_type(2), data_type(1), data_type(1), data_type(2);
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
 		
 		
 
-		Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic> B = a*A;
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> B = a*A;
 		B = A*a;
 	}
 
@@ -435,10 +435,10 @@ BOOST_AUTO_TEST_CASE(size_object_sensible_mat)
 	BOOST_AUTO_TEST_CASE(self_multiplication_dbl_int)
 	{
 		
-		using data_type = bertini::dbl;
+		using T = bertini::dbl;
 		
-		Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
-		A << data_type(2), data_type(1), data_type(1), data_type(2);
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
 		
 		int a(1);
 
@@ -450,12 +450,12 @@ BOOST_AUTO_TEST_CASE(size_object_sensible_mat)
 	{
 		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
-		using data_type = bertini::mpfr;
+		using T = bertini::mpfr;
 		
-		Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
-		A << data_type(2), data_type(1), data_type(1), data_type(2);
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
 		
-		data_type a(1);
+		T a(1);
 
 		A*=a;
 	}
@@ -465,17 +465,15 @@ BOOST_AUTO_TEST_CASE(size_object_sensible_mat)
 	{
 		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
-		using data_type = bertini::mpfr;
+		using T = bertini::mpfr;
 		
-		data_type q(1);
+		T q(1);
 		int a(1);
 
-		auto b = a*q;
-
-		Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
-		A << data_type(2), data_type(1), data_type(1), data_type(2);
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
 		
-		// A*=a;
+		A*=a;
 	}
 
 
@@ -483,41 +481,191 @@ BOOST_AUTO_TEST_CASE(size_object_sensible_mat)
 	{
 		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
-		using data_type = bertini::mpfr;
+		using T = bertini::mpfr;
 		
-		data_type q(1);
+		T q(1);
 		long a(1);
 
-		Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
-		A << data_type(2), data_type(1), data_type(1), data_type(2);
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
 		
-		// A*=a;
+		A*=a;
 	}
 
 	BOOST_AUTO_TEST_CASE(self_multiplication_mpfr_mpz_int)
 	{
 		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
-		using data_type = bertini::mpfr;
+		using T = bertini::mpfr;
 		
-		data_type q(1);
+		T q(1);
 		bertini::mpz_int a(1);
 		
-		Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
-		A << data_type(2), data_type(1), data_type(1), data_type(2);
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
 		
-		// A*=a;
+		A*=a;
 	}
 
+
+	// scalar division with various types
+
+	BOOST_AUTO_TEST_CASE(scalar_division_mpfr_mpfr)
+	{
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
+
+		using T = bertini::mpfr;
+		
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
+		
+		T a(1);
+		// this breaks with boost multiprecision et_on with eigen 3.2.7.
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> B;
+		B = A/a;
+	}
+
+
+	BOOST_AUTO_TEST_CASE(scalar_division_mpfr_int)
+	{
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
+
+		using T = bertini::mpfr;
+		
+		T q(1);
+		int a(1);
+
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
+
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> B;
+		B = A/a;
+	}
+
+
+	BOOST_AUTO_TEST_CASE(scalar_division_mpfr_long)
+	{
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
+
+		using T = bertini::mpfr;
+		
+		T q(1);
+		long a(1);
+		
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
+
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> B;
+		B = A/a;
+	}
+
+	BOOST_AUTO_TEST_CASE(scalar_division_mpfr_mpz_int)
+	{
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
+
+		using T = bertini::mpfr;
+		
+		T q(1);
+		bertini::mpz_int a(1);
+		
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
+
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> B;
+		B = A/a;
+	}
+
+
+
+	// self division
+
+
+	BOOST_AUTO_TEST_CASE(self_division_dbl_int)
+	{
+		
+		using T = bertini::dbl;
+		
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
+		
+		int a(1);
+
+		A/=a;
+	}
+
+
+	BOOST_AUTO_TEST_CASE(self_division_mpfr_mpfr)
+	{
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
+
+		using T = bertini::mpfr;
+		
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
+		
+		T a(1);
+
+		A/=a;
+	}
+
+
+	BOOST_AUTO_TEST_CASE(self_division_mpfr_int)
+	{
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
+
+		using T = bertini::mpfr;
+		
+		T q(1);
+		int a(1);
+
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
+		
+		A/=a;
+	}
+
+
+	BOOST_AUTO_TEST_CASE(self_division_mpfr_long)
+	{
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
+
+		using T = bertini::mpfr;
+		
+		T q(1);
+		long a(1);
+
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
+		
+		A/=a;
+	}
+
+	BOOST_AUTO_TEST_CASE(self_division_mpfr_mpz_int)
+	{
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
+
+		using T = bertini::mpfr;
+		
+		T q(1);
+		bertini::mpz_int a(1);
+		
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
+		
+		A/=a;
+	}
+
+
+	
 	BOOST_AUTO_TEST_CASE(change_precision_mpfr_float)
 	{
 		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
 		using bertini::Precision;
-		using data_type = bertini::mpfr_float;
+		using T = bertini::mpfr_float;
 		
-		Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
-		A << data_type(2), data_type(1), data_type(1), data_type(2);
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
 
 		Precision(A,100);
 		BOOST_CHECK_EQUAL(A(0,0).precision(),100);
@@ -528,10 +676,10 @@ BOOST_AUTO_TEST_CASE(size_object_sensible_mat)
 		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
 		using bertini::Precision;
-		using data_type = bertini::mpfr;
+		using T = bertini::mpfr;
 		
-		Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
-		A << data_type(2), data_type(1), data_type(1), data_type(2);
+		Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
+		A << T(2), T(1), T(1), T(2);
 
 		Precision(A,100);
 		BOOST_CHECK_EQUAL(A(0,0).precision(),100);
