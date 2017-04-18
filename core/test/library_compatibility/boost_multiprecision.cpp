@@ -1,26 +1,26 @@
 //This file is part of Bertini 2.
 //
-//fundamentals_test.cpp is free software: you can redistribute it and/or modify
+//test/library_compatibility/boost_multiprecision.cpp is free software: you can redistribute it and/or modify
 //it under the terms of the GNU General Public License as published by
 //the Free Software Foundation, either version 3 of the License, or
 //(at your option) any later version.
 //
-//fundamentals_test.cpp is distributed in the hope that it will be useful,
+//test/library_compatibility/boost_multiprecision.cpp is distributed in the hope that it will be useful,
 //but WITHOUT ANY WARRANTY; without even the implied warranty of
 //MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 //GNU General Public License for more details.
 //
 //You should have received a copy of the GNU General Public License
-//along with fundamentals_test.cpp.  If not, see <http://www.gnu.org/licenses/>.
+//along with test/library_compatibility/boost_multiprecision.cpp.  If not, see <http://www.gnu.org/licenses/>.
 //
-// Copyright(C) 2015, 2016 by Bertini2 Development Team
+// Copyright(C) 2015 - 2017 by Bertini2 Development Team
 //
 // See <http://www.gnu.org/licenses/> for a copy of the license, 
 // as well as COPYING.  Bertini2 is provided with permitted 
 // additional terms in the b2/licenses/ directory.
 
 // individual authors of this file include:
-// daniel brake, university of notre dame
+// dani brake, university of notre dame
 
 
 #include <boost/test/unit_test.hpp>
@@ -28,7 +28,7 @@
 #include <boost/multiprecision/random.hpp>
 #include <iostream>
 
-#include "bertini2/limbo.hpp"
+#include "bertini2/mpfr_complex.hpp"
 #include "bertini2/num_traits.hpp"
 
 #include <boost/random.hpp>
@@ -37,8 +37,8 @@ using mpfr_float = bertini::mpfr_float;
 
 using bertini::DefaultPrecision;
 
-BOOST_AUTO_TEST_SUITE(super_fundamentals)
 
+BOOST_AUTO_TEST_SUITE(boost_multiprecision)
 
 
 BOOST_AUTO_TEST_CASE(make_random_mpfr_float_50)
@@ -159,68 +159,6 @@ BOOST_AUTO_TEST_CASE(precision_mpfr_constructed_from_string)
 	BOOST_CHECK_EQUAL(x.precision(),30);
 }
 
-	
-BOOST_AUTO_TEST_CASE(index_and_subscript_generation1)
-{
-
-	std::vector<size_t> dimensions{2,2};
-	std::vector<size_t> v;
-
-	std::vector<size_t> solution{0,0};
-	v = bertini::IndexToSubscript(0ul,dimensions);
-	BOOST_CHECK(v==solution);
-
-	solution[0] = 1; solution[1] = 0;
-	v = bertini::IndexToSubscript(1ul,dimensions);
-	BOOST_CHECK(v==solution);
-
-	solution[0] = 0; solution[1] = 1;
-	v = bertini::IndexToSubscript(2ul,dimensions);
-	BOOST_CHECK(v==solution);
-
-	solution[0] = 1; solution[1] = 1;
-	v = bertini::IndexToSubscript(3ul,dimensions);
-	BOOST_CHECK(v==solution);
-
-}
-
-
-
-BOOST_AUTO_TEST_CASE(index_and_subscript_generation2)
-{
-
-	size_t index = 20;
-
-	std::vector<size_t> dimensions{2,3,4,5};
-
-	std::vector<size_t> v = bertini::IndexToSubscript(index,dimensions);
-
-	std::vector<size_t> solution{0,1,3,0};
-	BOOST_CHECK(v==solution);
-}
-
-BOOST_AUTO_TEST_CASE(index_and_subscript_generation3)
-{
-
-	size_t index = 119;
-
-	std::vector<size_t> dimensions{2,3,4,5};
-
-	std::vector<size_t> v = bertini::IndexToSubscript(index,dimensions);
-
-	std::vector<size_t> solution{1,2,3,4};
-	BOOST_CHECK(v==solution);
-}
-
-
-
-BOOST_AUTO_TEST_CASE(index_and_subscript_generation_out_of_range)
-{
-
-
-	std::vector<size_t> dimensions{2,3,4,5};
-	BOOST_CHECK_THROW(bertini::IndexToSubscript(120ul,dimensions),std::out_of_range);
-}
 
 
 
@@ -236,8 +174,8 @@ BOOST_AUTO_TEST_CASE(precision_of_complex_double_is_16)
 	BOOST_CHECK_EQUAL(bertini::Precision(a), 16);
 }
 
+BOOST_AUTO_TEST_SUITE_END() // boost_multiprecision
 
-BOOST_AUTO_TEST_SUITE_END()
 
 
 

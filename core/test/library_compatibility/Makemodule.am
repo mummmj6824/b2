@@ -1,0 +1,22 @@
+#this is core/test/library_compatibility/Makemodule.am
+
+EXTRA_PROGRAMS += test_library_compatibility
+
+TESTS += test_library_compatibility
+
+test_library_compatibility_source_files = \
+	test/library_compatibility/root.cpp \
+	test/library_compatibility/eigen.cpp \
+	test/library_compatibility/boost_multiprecision.cpp 
+
+
+
+test_library_compatibility_SOURCES = \
+	$(test_library_compatibility_source_files)
+
+
+
+test_library_compatibility_LDADD = $(BOOST_FILESYSTEM_LIB) $(BOOST_SYSTEM_LIB)  $(BOOST_CHRONO_LIB) $(BOOST_REGEX_LIB) $(BOOST_TIMER_LIB) $(MPI_CXXLDFLAGS) $(BOOST_UNIT_TEST_FRAMEWORK_LIB) $(BOOST_SERIALIZATION_LIB) $(BOOST_LOG_LIB) $(BOOST_LOG_SETUP_LIB) $(BOOST_THREAD_LIB) libbertini2.la
+
+test_library_compatibility_CXXFLAGS = $(BOOST_CPPFLAGS)
+

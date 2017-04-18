@@ -13,7 +13,7 @@
 //You should have received a copy of the GNU General Public License
 //along with eigen_test.cpp.  If not, see <http://www.gnu.org/licenses/>.
 //
-// Copyright(C) 2015, 2016 by Bertini2 Development Team
+// Copyright(C) 2015 - 2017 by Bertini2 Development Team
 //
 // See <http://www.gnu.org/licenses/> for a copy of the license, 
 // as well as COPYING.  Bertini2 is provided with permitted 
@@ -29,14 +29,14 @@
 
 
 
+const unsigned TEST_MPFR_DEFAULT_DIGITS = 30;
 
-
-#include "eigen_extensions.hpp"
+#include "bertini2/eigen_extensions.hpp"
 
 #include <Eigen/Dense>
 #include <Eigen/LU>
 
-#include "externs.hpp"
+
 
 
 using mpfr_float = bertini::mpfr_float;
@@ -46,8 +46,7 @@ using bertini::KahanMatrix;
 
 
 
-BOOST_AUTO_TEST_SUITE(num_traits_checking)
-
+BOOST_AUTO_TEST_SUITE(eigen)
 
 // this test assures that the Eigen::NumTraits defined in eigen_extensions.hpp is correctly found during template instantiation, and that the Real type it defines is actually mpfr_float.  If it were not, then we would be unable to make an expression of ::Real type in variable q, because it would be an expression, not a populatable number of type mpfr_float.
 BOOST_AUTO_TEST_CASE(expressions_of_mpfr_floats)
@@ -79,10 +78,8 @@ BOOST_AUTO_TEST_CASE(size_object_sensible_mat)
 	BOOST_CHECK(!bertini::IsEmpty(v));
 }
 
-BOOST_AUTO_TEST_SUITE_END()
 
 
-BOOST_AUTO_TEST_SUITE(kahan_matrix_solving_LU)
 
 
 
@@ -260,9 +257,9 @@ BOOST_AUTO_TEST_SUITE(kahan_matrix_solving_LU)
 	BOOST_AUTO_TEST_CASE(small_value_multiprecision)
 	{
 
-		bertini::DefaultPrecision(CLASS_TEST_MPFR_DEFAULT_DIGITS);
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
-		bertini::mpfr_float p = pow(mpfr_float(10),-mpfr_float(CLASS_TEST_MPFR_DEFAULT_DIGITS));
+		bertini::mpfr_float p = pow(mpfr_float(10),-mpfr_float(TEST_MPFR_DEFAULT_DIGITS));
 
 		BOOST_CHECK( bertini::IsSmallValue(bertini::complex(p,mpfr_float(0))));
 		BOOST_CHECK( bertini::IsSmallValue(bertini::complex(-p,mpfr_float(0))));
@@ -279,9 +276,9 @@ BOOST_AUTO_TEST_SUITE(kahan_matrix_solving_LU)
 
 	BOOST_AUTO_TEST_CASE(large_change_multiprecision)
 	{
-		bertini::DefaultPrecision(CLASS_TEST_MPFR_DEFAULT_DIGITS);
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
-		bertini::mpfr_float p = pow(mpfr_float(10),-mpfr_float(CLASS_TEST_MPFR_DEFAULT_DIGITS));
+		bertini::mpfr_float p = pow(mpfr_float(10),-mpfr_float(TEST_MPFR_DEFAULT_DIGITS));
 
 		BOOST_CHECK( bertini::IsLargeChange(mpfr_float(1.0),p));
 
@@ -320,7 +317,7 @@ BOOST_AUTO_TEST_SUITE(kahan_matrix_solving_LU)
 
 	BOOST_AUTO_TEST_CASE(dot_product_with_mpfr_type)
 	{
-		bertini::DefaultPrecision(CLASS_TEST_MPFR_DEFAULT_DIGITS);
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
 		using data_type = bertini::mpfr;
 		
@@ -337,7 +334,7 @@ BOOST_AUTO_TEST_SUITE(kahan_matrix_solving_LU)
 
 	BOOST_AUTO_TEST_CASE(svd_with_mpfr_type)
 	{
-		bertini::DefaultPrecision(CLASS_TEST_MPFR_DEFAULT_DIGITS);
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
 		using data_type = bertini::mpfr;
 		
@@ -355,7 +352,7 @@ BOOST_AUTO_TEST_SUITE(kahan_matrix_solving_LU)
 
 	BOOST_AUTO_TEST_CASE(scalar_multiplication_mpfr_mpfr)
 	{
-		bertini::DefaultPrecision(CLASS_TEST_MPFR_DEFAULT_DIGITS);
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
 		using data_type = bertini::mpfr;
 		
@@ -371,7 +368,7 @@ BOOST_AUTO_TEST_SUITE(kahan_matrix_solving_LU)
 
 	BOOST_AUTO_TEST_CASE(scalar_multiplication_mpfr_int)
 	{
-		bertini::DefaultPrecision(CLASS_TEST_MPFR_DEFAULT_DIGITS);
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
 		using data_type = bertini::mpfr;
 		
@@ -392,7 +389,7 @@ BOOST_AUTO_TEST_SUITE(kahan_matrix_solving_LU)
 
 	BOOST_AUTO_TEST_CASE(scalar_multiplication_mpfr_long)
 	{
-		bertini::DefaultPrecision(CLASS_TEST_MPFR_DEFAULT_DIGITS);
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
 		using data_type = bertini::mpfr;
 		
@@ -412,7 +409,7 @@ BOOST_AUTO_TEST_SUITE(kahan_matrix_solving_LU)
 
 	BOOST_AUTO_TEST_CASE(scalar_multiplication_mpfr_mpz_int)
 	{
-		bertini::DefaultPrecision(CLASS_TEST_MPFR_DEFAULT_DIGITS);
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
 		using data_type = bertini::mpfr;
 		
@@ -451,7 +448,7 @@ BOOST_AUTO_TEST_SUITE(kahan_matrix_solving_LU)
 
 	BOOST_AUTO_TEST_CASE(self_multiplication_mpfr_mpfr)
 	{
-		bertini::DefaultPrecision(CLASS_TEST_MPFR_DEFAULT_DIGITS);
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
 		using data_type = bertini::mpfr;
 		
@@ -466,7 +463,7 @@ BOOST_AUTO_TEST_SUITE(kahan_matrix_solving_LU)
 
 	BOOST_AUTO_TEST_CASE(self_multiplication_mpfr_int)
 	{
-		bertini::DefaultPrecision(CLASS_TEST_MPFR_DEFAULT_DIGITS);
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
 		using data_type = bertini::mpfr;
 		
@@ -478,13 +475,13 @@ BOOST_AUTO_TEST_SUITE(kahan_matrix_solving_LU)
 		Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
 		A << data_type(2), data_type(1), data_type(1), data_type(2);
 		
-		A*=a;
+		// A*=a;
 	}
 
 
 	BOOST_AUTO_TEST_CASE(self_multiplication_mpfr_long)
 	{
-		bertini::DefaultPrecision(CLASS_TEST_MPFR_DEFAULT_DIGITS);
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
 		using data_type = bertini::mpfr;
 		
@@ -494,12 +491,12 @@ BOOST_AUTO_TEST_SUITE(kahan_matrix_solving_LU)
 		Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
 		A << data_type(2), data_type(1), data_type(1), data_type(2);
 		
-		A*=a;
+		// A*=a;
 	}
 
 	BOOST_AUTO_TEST_CASE(self_multiplication_mpfr_mpz_int)
 	{
-		bertini::DefaultPrecision(CLASS_TEST_MPFR_DEFAULT_DIGITS);
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
 		using data_type = bertini::mpfr;
 		
@@ -509,12 +506,12 @@ BOOST_AUTO_TEST_SUITE(kahan_matrix_solving_LU)
 		Eigen::Matrix<data_type, Eigen::Dynamic, Eigen::Dynamic> A(2,2);
 		A << data_type(2), data_type(1), data_type(1), data_type(2);
 		
-		A*=a;
+		// A*=a;
 	}
 
 	BOOST_AUTO_TEST_CASE(change_precision_mpfr_float)
 	{
-		bertini::DefaultPrecision(CLASS_TEST_MPFR_DEFAULT_DIGITS);
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
 		using bertini::Precision;
 		using data_type = bertini::mpfr_float;
@@ -528,7 +525,7 @@ BOOST_AUTO_TEST_SUITE(kahan_matrix_solving_LU)
 
 	BOOST_AUTO_TEST_CASE(change_precision_mpfr_complex)
 	{
-		bertini::DefaultPrecision(CLASS_TEST_MPFR_DEFAULT_DIGITS);
+		bertini::DefaultPrecision(TEST_MPFR_DEFAULT_DIGITS);
 
 		using bertini::Precision;
 		using data_type = bertini::mpfr;
@@ -540,7 +537,8 @@ BOOST_AUTO_TEST_SUITE(kahan_matrix_solving_LU)
 		BOOST_CHECK_EQUAL(A(0,0).precision(),100);
 	}
 
-BOOST_AUTO_TEST_SUITE_END()
+BOOST_AUTO_TEST_SUITE_END() // eigen
+
 
 	
 	

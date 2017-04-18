@@ -7,3 +7,4 @@ nag_datatypes_test
 pool_test
 settings_test
 tracking_basics_test
+test_library_compatibility
