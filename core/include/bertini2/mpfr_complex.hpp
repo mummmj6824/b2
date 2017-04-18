@@ -500,6 +500,16 @@ namespace bertini {
 			return *this;
 		}
 		
+		/**
+		 Complex addition, by a real mpfr_float.
+		 */
+		complex& operator+=(const mpfr_float & rhs)
+		{
+			real_ += rhs;
+			
+			return *this;
+		}
+
 		complex& operator+=(const mpz_int & rhs)
 		{
 			real_+=rhs;
@@ -527,6 +537,16 @@ namespace bertini {
 			return *this;
 		}
 		
+		/**
+		 Complex subtraction, by a real mpfr_float.
+		 */
+		complex& operator-=(const mpfr_float & rhs)
+		{
+			real_ -= rhs;
+			
+			return *this;
+		}
+
 		/**
 		 Complex subtraction
 		 */
