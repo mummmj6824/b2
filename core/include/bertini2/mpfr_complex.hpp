@@ -134,12 +134,14 @@ namespace bertini {
 		complex(double re) : real_(re), imag_(0){}
 		
 		template<typename T, typename = typename std::enable_if<std::is_integral<T>::value >::type>
+		explicit
 		complex(T re) : real_(re), imag_(0){}
 
 		template<typename T, typename = typename std::enable_if<std::is_integral<T>::value >::type>
 		explicit
 		complex(T re, T im) : real_(re), imag_(im){}
 
+		explicit
 		complex(mpz_int const& re) : real_(re), imag_(0){}
 
 		explicit
@@ -153,11 +155,12 @@ namespace bertini {
 		/**
 		 Single-parameter for constructing a real-valued complex from a single high-precision number
 		 */
-		
+		explicit
 		complex(const mpfr_float & re) : real_(re), imag_(0){}
 
 		template<typename T, typename S, typename R, 
 		 			typename Q = typename std::enable_if<boost::is_convertible<R, mpfr_float>::value, mpfr_float>::type>
+		explicit
 		complex(boost::multiprecision::detail::expression<T,S,R> const& other)
 		{
 			real_ = other;
@@ -182,6 +185,7 @@ namespace bertini {
 		/**
 		 Two-parameter constructor for building a complex from two high precision numbers
 		 */
+		explicit
 		complex(const mpfr_float & re, const mpfr_float & im) : real_(re), imag_(im)
 		{}
 		
@@ -189,14 +193,14 @@ namespace bertini {
 		/**
 		 Two-parameter constructor for building a complex from two low precision numbers
 		 */
-		 explicit
+		explicit
 		complex(std::complex<double> z) : real_(z.real()), imag_(z.imag())
 		{}
 
 		/**
 		 Two-parameter constructor for building a complex from two low precision numbers
 		 */
-		 explicit
+		explicit
 		complex(double re, double im) : real_(re), imag_(im)
 		{}
 		
@@ -213,7 +217,7 @@ namespace bertini {
 		/**
 		 Mixed two-parameter constructor for building a complex from two strings.
 		 */
-		 explicit
+		explicit
 		complex(const mpfr_float & re, const std::string & im) : real_(re), imag_(im)
 		{}
 		
@@ -221,7 +225,7 @@ namespace bertini {
 		/**
 		 Mixed two-parameter constructor for building a complex from two strings.
 		 */
-		 explicit
+		explicit
 		complex(const std::string & re, const mpfr_float & im) : real_(re), imag_(im)
 		{}
 		
