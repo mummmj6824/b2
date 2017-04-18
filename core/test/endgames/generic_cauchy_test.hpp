@@ -13,7 +13,7 @@
 //You should have received a copy of the GNU General Public License
 //along with generic_cauchy_test.hpp.  If not, see <http://www.gnu.org/licenses/>.
 //
-// Copyright(C) 2015, 2016 by Bertini2 Development Team
+// Copyright(C) 2015 - 2017 by Bertini2 Development Team
 //
 // See <http://www.gnu.org/licenses/> for a copy of the license, 
 // as well as COPYING.  Bertini2 is provided with permitted 
@@ -404,7 +404,7 @@ BOOST_AUTO_TEST_CASE(stabilization_of_C_over_K)
 
 	TimeCont<BCT> pseg_times;
 	SampCont<BCT> pseg_samples;
-	TimeCont<BCT> c_over_k_array;
+	TimeCont<BRT> c_over_k_array;
 
 	BCT time;
 	Vec<BCT> sample(1);
