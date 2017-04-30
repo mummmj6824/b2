@@ -13,7 +13,7 @@
 //You should have received a copy of the GNU General Public License
 //along with fixed_precision_tracker.hpp.  If not, see <http://www.gnu.org/licenses/>.
 //
-// Copyright(C) 2015, 2016 by Bertini2 Development Team
+// Copyright(C) 2015 - 2017 by Bertini2 Development Team
 //
 // See <http://www.gnu.org/licenses/> for a copy of the license, 
 // as well as COPYING.  Bertini2 is provided with permitted 
@@ -76,7 +76,7 @@ namespace bertini{
 			using Stepping = typename Base::Stepping;
 			using Newton = typename Base::Newton;
 
-			FixedPrecisionTracker(System const& sys) : Base(sys){}
+			FixedPrecisionTracker(System const& sys);
 
 			/**
 			\brief An additional no-op call, provided for conformity of interface with AMP tracker in generic code.
@@ -179,64 +179,7 @@ namespace bertini{
 
 			\return Success if the step was successful, and a non-success code if something went wrong, such as a linear algebra failure or AMP Criterion violation.
 			*/
-			SuccessCode TrackerIteration() const override
-			{
-				static_assert(std::is_same<	typename Eigen::NumTraits<RT>::Real, 
-			              				typename Eigen::NumTraits<CT>::Real>::value,
-			              				"underlying complex type and the type for comparisons must match");
-
-				this->NotifyObservers(NewStep<EmitterType >(*this));
-
-				Vec<CT>& predicted_space = std::get<Vec<CT> >(this->temporary_space_); // this will be populated in the Predict step
-				Vec<CT>& current_space = std::get<Vec<CT> >(this->current_space_); // the thing we ultimately wish to update
-				CT current_time = CT(this->current_time_);
-				CT delta_t = CT(this->delta_t_);
-
-				SuccessCode predictor_code = Predict(predicted_space, current_space, current_time, delta_t);
-
-				if (predictor_code!=SuccessCode::Success)
-				{
-					this->NotifyObservers(FirstStepPredictorMatrixSolveFailure<EmitterType >(*this));
-
-					this->next_stepsize_ = Get<Stepping>().step_size_fail_factor*this->current_stepsize_;
-
-					UpdateStepsize();
-
-					return predictor_code;
-				}
-
-				this->NotifyObservers(SuccessfulPredict<EmitterType , CT>(*this, predicted_space));
-
-				Vec<CT>& tentative_next_space = std::get<Vec<CT> >(this->tentative_space_); // this will be populated in the Correct step
-
-				CT tentative_next_time = current_time + delta_t;
-
-				SuccessCode corrector_code = Correct(tentative_next_space,
-													 predicted_space,
-													 tentative_next_time);
-
-				if (corrector_code == SuccessCode::GoingToInfinity)
-				{
-					// there is no corrective action possible...
-					return corrector_code;
-				}
-				else if (corrector_code!=SuccessCode::Success)
-				{
-					this->NotifyObservers(CorrectorMatrixSolveFailure<EmitterType >(*this));
-
-					this->next_stepsize_ = Get<Stepping>().step_size_fail_factor*this->current_stepsize_;
-					UpdateStepsize();
-
-					return corrector_code;
-				}
-
-				
-				this->NotifyObservers(SuccessfulCorrect<EmitterType , CT>(*this, tentative_next_space));
-
-				// copy the tentative vector into the current space vector;
-				current_space = tentative_next_space;
-				return SuccessCode::Success;
-			}
+			SuccessCode TrackerIteration() const override;
 
 
 			/**
@@ -547,6 +490,10 @@ namespace bertini{
 
 			unsigned precision_;
 		}; // re: MultiplePrecisionTracker
+
+
+		extern template class FixedPrecisionTracker<DoublePrecisionTracker>;
+		extern template class FixedPrecisionTracker<MultiplePrecisionTracker>;
 	} // namespace tracking
 } // namespace bertini
 
