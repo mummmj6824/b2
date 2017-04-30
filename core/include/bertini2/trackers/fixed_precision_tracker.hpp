@@ -471,8 +471,7 @@ namespace bertini{
 			/**
 			\brief Construct a tracker, associating to it a System.
 			*/
-			DoublePrecisionTracker(class System const& sys) : FixedPrecisionTracker<DoublePrecisionTracker>(sys)
-			{	}
+			DoublePrecisionTracker(class System const& sys);
 
 
 			DoublePrecisionTracker() = delete;
@@ -480,10 +479,7 @@ namespace bertini{
 			virtual ~DoublePrecisionTracker() = default;
 
 
-			unsigned CurrentPrecision() const override
-			{
-				return DoublePrecision();
-			}
+			unsigned CurrentPrecision() const override;
 
 
 			/**
@@ -497,21 +493,7 @@ namespace bertini{
 			*/
 			SuccessCode TrackerLoopInitialization(BaseComplexType const& start_time,
 			                               BaseComplexType const& end_time,
-										   Vec<BaseComplexType> const& start_point) const override
-			{
-				this->NotifyObservers(Initializing<EmitterType,BaseComplexType>(*this,start_time, end_time, start_point));
-
-				// set up the master current time and the current step size
-				this->current_time_ = start_time;
-				this->endtime_ = end_time;
-				std::get<Vec<BaseComplexType> >(this->current_space_) = start_point;
-				if (this->reinitialize_stepsize_)
-					this->SetStepSize(min(Get<Stepping>().initial_step_size,abs(start_time-end_time)/Get<Stepping>().min_num_steps));
-
-				ResetCounters();
-
-				return SuccessCode::Success;
-			}
+										   Vec<BaseComplexType> const& start_point) const override;
 
 
 		private:
@@ -535,8 +517,7 @@ namespace bertini{
 
 			The precision of the tracker will be whatever the current default is.  The tracker cannot change its precision, and will require the default precision to be this precision whenever tracking is started.  That is, the precision is fixed.
 			*/
-			MultiplePrecisionTracker(class System const& sys) : FixedPrecisionTracker<MultiplePrecisionTracker>(sys), precision_(DefaultPrecision())
-			{	}
+			MultiplePrecisionTracker(class System const& sys);
 
 			
 			MultiplePrecisionTracker() = delete;
@@ -544,10 +525,7 @@ namespace bertini{
 			virtual ~MultiplePrecisionTracker() = default;
 
 
-			unsigned CurrentPrecision() const override
-			{
-				return precision_;
-			}
+			unsigned CurrentPrecision() const override;
 
 
 			/**
@@ -561,61 +539,10 @@ namespace bertini{
 			*/
 			SuccessCode TrackerLoopInitialization(BaseComplexType const& start_time,
 			                               BaseComplexType const& end_time,
-										   Vec<BaseComplexType> const& start_point) const override
-			{
+										   Vec<BaseComplexType> const& start_point) const override;
 
-				if (start_point(0).precision()!=DefaultPrecision())
-				{
-					std::stringstream err_msg;
-					err_msg << "start point for fixed multiple precision tracker has differing precision from default (" << start_point(0).precision() << "!=" << DefaultPrecision() << "), tracking cannot start";
-					throw std::runtime_error(err_msg.str());
-				}
+			bool PrecisionSanityCheck() const;
 
-				if (start_point(0).precision()!=CurrentPrecision())
-				{
-					std::stringstream err_msg;
-					err_msg << "start point for fixed multiple precision tracker has differing precision from tracker's precision (" << start_point(0).precision() << "!=" << CurrentPrecision() << "), tracking cannot start";
-					throw std::runtime_error(err_msg.str());
-				}
-
-				if (DefaultPrecision()!=CurrentPrecision())
-				{
-					std::stringstream err_msg;
-					err_msg << "current default precision differs from tracker's precision (" << DefaultPrecision() << "!=" << CurrentPrecision() << "), tracking cannot start";
-					throw std::runtime_error(err_msg.str());
-				}
-
-
-				this->NotifyObservers(Initializing<EmitterType,BaseComplexType>(*this,start_time, end_time, start_point));
-
-				// set up the master current time and the current step size
-				this->current_time_ = start_time;
-				this->endtime_ = end_time;
-				std::get<Vec<BaseComplexType> >(this->current_space_) = start_point;
-				if (this->reinitialize_stepsize_)
-					this->SetStepSize(min(Get<Stepping>().initial_step_size,mpfr_float(abs(start_time-end_time)/Get<Stepping>().min_num_steps)));
-
-				ResetCounters();
-
-				return SuccessCode::Success;
-			}
-
-			bool PrecisionSanityCheck() const
-			{	
-				return GetSystem().precision() == precision_ &&
-						DefaultPrecision()==precision_ && 
-						std::get<Vec<mpfr> >(current_space_)(0).precision() == precision_ &&
-						std::get<Vec<mpfr> >(tentative_space_)(0).precision() == precision_ &&
-						std::get<Vec<mpfr> >(temporary_space_)(0).precision() == precision_ &&
-						std::get<mpfr_float>(norm_delta_z_).precision() == precision_ &&
-						std::get<mpfr_float>(condition_number_estimate_).precision() == precision_ &&
-						std::get<mpfr_float>(error_estimate_).precision() == precision_ &&
-						std::get<mpfr_float>(norm_J_).precision() == precision_ &&
-						std::get<mpfr_float>(norm_J_inverse_).precision() == precision_ &&
-						std::get<mpfr_float>(size_proportion_).precision() == precision_ && 
-						Precision(this->endtime_)==precision_
-						        ;				
-			}
 		private:
 
 			unsigned precision_;
