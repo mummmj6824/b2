@@ -28,7 +28,8 @@ tracking_header_files = \
 
 tracking_source_files = \
 	src/tracking/explicit_predictors.cpp \
-	src/tracking/fixed_precision_tracker.cpp
+	src/tracking/fixed_precision_tracker.cpp \
+	src/tracking/amp_tracker.cpp
 
 tracking = $(tracking_header_files) $(tracking_source_files)
 
