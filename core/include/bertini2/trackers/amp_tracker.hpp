@@ -1039,19 +1039,7 @@ namespace bertini{
 
 			\param source_point The point into which to copy to the internally stored current space point.
 			*/
-			void DoubleToDouble(Vec<dbl> const& source_point) const
-			{	
-				#ifndef BERTINI_DISABLE_ASSERTS
-				assert(source_point.size() == GetSystem().NumVariables() && "source point for converting to multiple precision is not the same size as the number of variables in the system being solved.");
-				#endif
-
-				current_precision_ = DoublePrecision();
-				DefaultPrecision(DoublePrecision());
-
-				GetSystem().precision(16);
-
-				std::get<Vec<dbl> >(current_space_) = source_point;
-			}
+			void DoubleToDouble(Vec<dbl> const& source_point) const;
 
 			/**
 			\brief Converts from multiple to double
@@ -1072,26 +1060,7 @@ namespace bertini{
 
 			\param source_point The point into which to copy to the internally stored current space point.
 			*/
-			void MultipleToDouble(Vec<mpfr> const& source_point) const
-			{	
-				#ifndef BERTINI_DISABLE_ASSERTS
-				assert(source_point.size() == GetSystem().NumVariables() && "source point for converting to multiple precision is not the same size as the number of variables in the system being solved.");
-				#endif
-				previous_precision_ = current_precision_;
-				current_precision_ = DoublePrecision();
-				DefaultPrecision(DoublePrecision());
-
-				GetSystem().precision(DoublePrecision());
-
-				if (std::get<Vec<dbl> >(current_space_).size()!=source_point.size())
-					std::get<Vec<dbl> >(current_space_).resize(source_point.size());
-
-				for (unsigned ii=0; ii<source_point.size(); ii++)
-					std::get<Vec<dbl> >(current_space_)(ii) = dbl(source_point(ii));
-
-				endtime_.precision(DoublePrecision());
-			}
-
+			void MultipleToDouble(Vec<mpfr> const& source_point) const;
 			/**
 			\brief Converts from multiple to double
 
@@ -1102,7 +1071,6 @@ namespace bertini{
 				MultipleToDouble(std::get<Vec<mpfr> >(current_space_));
 			}
 
-			//, std::get<mpfr>(current_time_), std::get<mpfr>(delta_t_)
 
 
 
@@ -1116,36 +1084,7 @@ namespace bertini{
 			\param new_precision The new precision.
 			\param source_point The point into which to copy to the internally stored current space point.
 			*/
-			void DoubleToMultiple(unsigned new_precision, Vec<dbl> const& source_point) const
-			{	
-				#ifndef BERTINI_DISABLE_ASSERTS
-				assert(source_point.size() == GetSystem().NumVariables() && "source point for converting to multiple precision is not the same size as the number of variables in the system being solved.");
-				assert(new_precision > DoublePrecision() && "must convert to precision higher than DoublePrecision when converting to multiple precision");
-				#endif
-				previous_precision_ = current_precision_;
-				current_precision_ = new_precision;
-				DefaultPrecision(new_precision);
-				GetSystem().precision(new_precision);
-				predictor_->ChangePrecision(new_precision);
-				corrector_->ChangePrecision(new_precision);
-
-				endtime_ = endtime_highest_precision_;
-				endtime_.precision(new_precision);
-
-				current_time_.precision(new_precision);
-
-				if (std::get<Vec<mpfr> >(current_space_).size()!=source_point.size())
-					std::get<Vec<mpfr> >(current_space_).resize(source_point.size());
-
-				for (unsigned ii=0; ii<source_point.size(); ii++)
-					std::get<Vec<mpfr> >(current_space_)(ii) = mpfr(source_point(ii));
-
-				AdjustTemporariesPrecision(new_precision);
-
-				#ifndef BERTINI_DISABLE_ASSERTS
-				assert(std::get<Vec<mpfr> >(current_space_)(0).precision() == current_precision_ && "precision of time in mpfr doesn't match tracker");
-				#endif
-			}
+			void DoubleToMultiple(unsigned new_precision, Vec<dbl> const& source_point) const;
 
 
 
@@ -1174,36 +1113,7 @@ namespace bertini{
 			\param new_precision The new precision.
 			\param source_point The point into which to copy to the internally stored current space point.
 			*/
-			void MultipleToMultiple(unsigned new_precision, Vec<mpfr> const& source_point) const
-			{	
-				#ifndef BERTINI_DISABLE_ASSERTS
-				assert(source_point.size() == GetSystem().NumVariables() && "source point for converting to multiple precision is not the same size as the number of variables in the system being solved.");
-				assert(new_precision > DoublePrecision() && "must convert to precision higher than DoublePrecision when converting to multiple precision");
-				#endif
-				previous_precision_ = current_precision_;
-				current_precision_ = new_precision;
-				DefaultPrecision(new_precision);
-				GetSystem().precision(new_precision);
-				predictor_->ChangePrecision(new_precision);
-				corrector_->ChangePrecision(new_precision);
-
-				endtime_ = endtime_highest_precision_;
-				endtime_.precision(new_precision);
-
-				current_time_.precision(new_precision);
-
-				if (std::get<Vec<mpfr> >(current_space_).size()!=source_point.size())
-					std::get<Vec<mpfr> >(current_space_).resize(source_point.size());
-
-				for (unsigned ii=0; ii<source_point.size(); ii++)
-					std::get<Vec<mpfr> >(current_space_)(ii) = mpfr(source_point(ii));
-
-				AdjustTemporariesPrecision(new_precision);
-
-				#ifndef BERTINI_DISABLE_ASSERTS
-				assert(std::get<Vec<mpfr> >(current_space_)(0).precision() == current_precision_ && "precision of time in mpfr doesn't match tracker");
-				#endif
-			}
+			void MultipleToMultiple(unsigned new_precision, Vec<mpfr> const& source_point) const;
 
 
 			/**
@@ -1226,26 +1136,7 @@ namespace bertini{
 
 			\brief new_precision The new precision to adjust to.
 			*/
-			void AdjustTemporariesPrecision(unsigned new_precision) const
-			{
-				unsigned num_vars = GetSystem().NumVariables();
-
-				//  the current_space value is adjusted in the appropriate ChangePrecision function
-				std::get<Vec<mpfr> >(tentative_space_).resize(num_vars);
-				for (unsigned ii = 0; ii < num_vars; ++ii)
-					std::get<Vec<mpfr> >(tentative_space_)(ii).precision(new_precision);
-
-				std::get<Vec<mpfr> >(temporary_space_).resize(num_vars);
-				for (unsigned ii = 0; ii < num_vars; ++ii)
-					std::get<Vec<mpfr> >(temporary_space_)(ii).precision(new_precision);
-
-				std::get<mpfr_float>(condition_number_estimate_).precision(new_precision);
-				std::get<mpfr_float>(error_estimate_).precision(new_precision);
-				std::get<mpfr_float>(norm_J_).precision(new_precision);
-				std::get<mpfr_float>(norm_J_inverse_).precision(new_precision);
-				std::get<mpfr_float>(norm_delta_z_).precision(new_precision);
-				std::get<mpfr_float>(size_proportion_).precision(new_precision);
-			}
+			void AdjustTemporariesPrecision(unsigned new_precision) const;
 
 
 
@@ -1255,33 +1146,7 @@ namespace bertini{
 
 			\return True if all internal state variables are in the same precision as current_precision_, false otherwise.
 			*/
-			bool PrecisionSanityCheck() const
-			{	
-				if (current_precision_==DoublePrecision())
-				{
-					return true;
-				}
-				else
-				{
-					assert(DefaultPrecision()==current_precision_ && "current precision differs from the default precision");
-
-					return GetSystem().precision() == current_precision_ &&
-							predictor_->precision() == current_precision_ &&
-							std::get<Vec<mpfr> >(current_space_)(0).precision() == current_precision_ &&
-							std::get<Vec<mpfr> >(tentative_space_)(0).precision() == current_precision_ &&
-							std::get<Vec<mpfr> >(temporary_space_)(0).precision() == current_precision_ &&
-							std::get<mpfr_float>(norm_delta_z_).precision() == current_precision_ &&
-							std::get<mpfr_float>(condition_number_estimate_).precision() == current_precision_ &&
-							std::get<mpfr_float>(error_estimate_).precision() == current_precision_ &&
-							std::get<mpfr_float>(norm_J_).precision() == current_precision_ &&
-							std::get<mpfr_float>(norm_J_inverse_).precision() == current_precision_ &&
-							std::get<mpfr_float>(size_proportion_).precision() == current_precision_ &&
-							Precision(endtime_) == current_precision_ && 
-							Precision(current_time_) == current_precision_
-							        ;
-				}
-				
-			}
+			bool PrecisionSanityCheck() const;
 
 
 
