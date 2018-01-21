@@ -8,6 +8,9 @@ setup(name='pybertini',
       author_email='brakeda@uwec.edu',
       license='GPL3 with permitted additional clauses',
       packages=['pybertini'],
+      install_requires=[
+          'sphinxcontrib-bibtex',
+      ]
       zip_safe=False)
 
 # dependencies to add
